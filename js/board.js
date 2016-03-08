@@ -1,7 +1,7 @@
 var board = function(rows, columns){
 	//originally meant for x value to mean row, y for column
 	//forgot cartesian coordinates are opposite,
-	//soo instead of fixing it, (x,y) is the x-th, y-th 
+	//so instead of fixing it, (x,y) is the x-th, y-th 
 	//block in cartesian coordinate
 
 	var rowsOfBlocks = [];
@@ -113,21 +113,36 @@ var board = function(rows, columns){
 			}
 			rowCount[completeRows[i]] = 0;
 		}
-		//todo:: still have to move rows above down
 		var i = highestRow - 1;
+		var moreCompletedRows = [];
 		while (i >= 0 && rowCount[i] > 0){
 			for (var a = 0; a < gameProperties.nColumns; a++){
-				if (rowsOfBlocks[a][i].getState()){
+				if (this.isFilled(a,i)){
 					var sprite = rowsOfBlocks[a][i].getSprite();
-					sprite.y+=gameProperties.tileWidth*nRowsFinished;
+					var newYPosition = i+1;
+					while (newYPosition<gameProperties.nRows-1&&!this.isFilled(a, newYPosition+1)){
+						newYPosition++;
+					}
+					sprite.y=gameProperties.tileWidth*(newYPosition);
 					rowsOfBlocks[a][i].reset(false);
-					rowsOfBlocks[a][i+nRowsFinished].setSprite(sprite);
-					rowsOfBlocks[a][i+nRowsFinished].setState(true);
-					rowCount[i+nRowsFinished]++;
+					rowsOfBlocks[a][newYPosition].setSprite(sprite);
+					rowsOfBlocks[a][newYPosition].setState(true);
+					rowCount[newYPosition]++;
+					if (rowCount[newYPosition] == gameProperties.nColumns){
+						//a row is full
+						moreCompletedRows.push(newYPosition);
+					}
 					rowCount[i]--;
 				}
 			}
 			i--;
 		}
+		if (moreCompletedRows.length > 0){
+			this.processCompleteRows(moreCompletedRows);
+		}
+	}
+
+	this.rotate = function(gamePiece){
+
 	}
 };

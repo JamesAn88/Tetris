@@ -8,6 +8,7 @@ var gamePieceProperties = {
 	gamePieceZ: 6,
 	totalPieces: 6,
 	map:[],
+	rotation:[],
 };
 
 gamePieceProperties.map[gamePieceProperties.gamePieceI] = [{x: 0, y: 0}, {x: 1, y: 0}, {x: 2, y: 0}, {x: 3, y: 0}];
@@ -18,6 +19,8 @@ gamePieceProperties.map[gamePieceProperties.gamePieceS] = [{x: 0, y: 1}, {x: 1, 
 gamePieceProperties.map[gamePieceProperties.gamePieceT] = [{x: 0, y: 0}, {x: 1, y: 0}, {x: 2, y: 0}, {x: 1, y: 1}];
 gamePieceProperties.map[gamePieceProperties.gamePieceZ] = [{x: 0, y: 0}, {x: 1, y: 0}, {x: 1, y: 1}, {x: 2, y: 1}];
 
+gamePieceProperties.rotation[gamePieceProperties.gamePieceI]=[[{dx:2,dy:-1},{dx:1,dy:0},{dx:0,dy:1},{dx:-1,dy:2}],[{dx:1,dy:2},{dx:0,dy:1},{dx:-1,dy:0},{dx:-2,dy:-1}],[{dx:-2,dy:1},{dx:-1,dy:0},{dx:0,dy:-1},{dx:1,dy:-2}],[{dx:-1,dy:-2},{dx:0,dy:-1},{dx:1,dy:0},{dx:2,dy:1}]];
+
 
 var gamepiece = function(type, dx, dy){
 	var startingConfig = gamePieceProperties.map[type];
@@ -27,6 +30,7 @@ var gamepiece = function(type, dx, dy){
 	var tetrominoeState = [];
 	var length = startingConfig.length;
 	var blockColor = Math.floor(Math.random() * (graphicAssets.blocks.frames));
+	var curState = 0;
 	for (var i = 0; i < length; i++){
 		var blockState = {}; //state of a single piece
 		var position = {};
@@ -58,7 +62,18 @@ var gamepiece = function(type, dx, dy){
 				tetrominoeState[a].sprite.x+=gameProperties.tileWidth;
 			}
 	}
-	/**
+
+	this.rotate = function(){
+		for (var a = 0; a < length; a++){
+			var transition = gamePieceProperties.rotation[type][curState];
+			tetrominoeState[a].position.x+=transition[a].dx;
+			tetrominoeState[a].position.y+=transition[a].dy;
+			tetrominoeState[a].sprite.x+=(transition[a].dx*gameProperties.tileWidth);
+			tetrominoeState[a].sprite.y+=(transition[a].dy*gameProperties.tileWidth);
+		}
+		curState = (curState+1)%4;
+	}
+	/** this stuff should belong to board
 	this.canMoveLeft = function(board){
 		for (var a = 0; a < length; a++){
 			var x = tetrominoeState[a].position.x;
