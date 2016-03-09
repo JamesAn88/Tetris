@@ -72,13 +72,16 @@ gameState.prototype = {
 			}
 		}
 
-		if (this.cursors.left.isDown && this.cursors.left.repeats % 5 == 0 && this.board.canMoveLeft(this.gamePiece)){
-			this.gamePiece.moveLeft();
-		}
+		if (this.gamePiece){ //in case it gets set to null before the next frame update
+			if (this.cursors.left.isDown && this.cursors.left.repeats % 5 == 0 && this.board.canMoveLeft(this.gamePiece)){
+				this.gamePiece.moveLeft();
+			}
 
-		if (this.cursors.right.isDown && this.cursors.right.repeats % 5 == 0 && this.board.canMoveRight(this.gamePiece)){
-			this.gamePiece.moveRight();
+			if (this.cursors.right.isDown && this.cursors.right.repeats % 5 == 0 && this.board.canMoveRight(this.gamePiece)){
+				this.gamePiece.moveRight();
+			}
 		}
+		
 		this.counter++;
 	},	
 
