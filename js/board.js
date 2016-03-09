@@ -142,7 +142,15 @@ var board = function(rows, columns){
 		}
 	}
 
-	this.rotate = function(gamePiece){
-
+	this.canRotate = function(gamePiece){
+		var rotationCoords = gamePiece.getRotationCoords();
+		for (var i = 0; i < rotationCoords.length; i++){
+			var x = rotationCoords[i].x;
+			var y = rotationCoords[i].y;
+			if (x < 0 || x > gameProperties.nColumns-1 || y < 0 || y > gameProperties.nRows-1 || this.isFilled(x,y)){
+				return false;
+			}
+		}
+		return true;
 	}
 };

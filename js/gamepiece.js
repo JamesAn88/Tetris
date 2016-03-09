@@ -15,11 +15,18 @@ gamePieceProperties.map[gamePieceProperties.gamePieceI] = [{x: 0, y: 0}, {x: 1, 
 gamePieceProperties.map[gamePieceProperties.gamePieceJ] = [{x: 0, y: 0}, {x: 1, y: 0}, {x: 2, y: 0}, {x: 2, y: 1}];
 gamePieceProperties.map[gamePieceProperties.gamePieceL] = [{x: 0, y: 0}, {x: 1, y: 0}, {x: 2, y: 0}, {x: 0, y: 1}];
 gamePieceProperties.map[gamePieceProperties.gamePieceO] = [{x: 0, y: 0}, {x: 1, y: 0}, {x: 0, y: 1}, {x: 1, y: 1}];
-gamePieceProperties.map[gamePieceProperties.gamePieceS] = [{x: 0, y: 1}, {x: 1, y: 0}, {x: 1, y: 1}, {x: 2, y: 0}];
+gamePieceProperties.map[gamePieceProperties.gamePieceS] = [{x: 0, y: 1}, {x: 1, y: 1}, {x: 1, y: 0}, {x: 2, y: 0}];
 gamePieceProperties.map[gamePieceProperties.gamePieceT] = [{x: 0, y: 0}, {x: 1, y: 0}, {x: 2, y: 0}, {x: 1, y: 1}];
 gamePieceProperties.map[gamePieceProperties.gamePieceZ] = [{x: 0, y: 0}, {x: 1, y: 0}, {x: 1, y: 1}, {x: 2, y: 1}];
 
 gamePieceProperties.rotation[gamePieceProperties.gamePieceI]=[[{dx:2,dy:-1},{dx:1,dy:0},{dx:0,dy:1},{dx:-1,dy:2}],[{dx:1,dy:2},{dx:0,dy:1},{dx:-1,dy:0},{dx:-2,dy:-1}],[{dx:-2,dy:1},{dx:-1,dy:0},{dx:0,dy:-1},{dx:1,dy:-2}],[{dx:-1,dy:-2},{dx:0,dy:-1},{dx:1,dy:0},{dx:2,dy:1}]];
+gamePieceProperties.rotation[gamePieceProperties.gamePieceJ]=[[{dx:1,dy:-1},{dx:0,dy:0},{dx:-1,dy:1},{dx:-2,dy:0}],[{dx:1,dy:1},{dx:0,dy:0},{dx:-1,dy:-1},{dx:0,dy:-2}],[{dx:-1,dy:1},{dx:0,dy:0},{dx:1,dy:-1},{dx:2,dy:0}],[{dx:-1,dy:-1},{dx:0,dy:0},{dx:1,dy:1},{dx:0,dy:2}]];
+gamePieceProperties.rotation[gamePieceProperties.gamePieceL]=[[{dx:1,dy:-1},{dx:0,dy:0},{dx:-1,dy:1},{dx:0,dy:-2}],[{dx:1,dy:1},{dx:0,dy:0},{dx:-1,dy:-1},{dx:2,dy:0}],[{dx:-1,dy:1},{dx:0,dy:0},{dx:1,dy:-1},{dx:0,dy:2}],[{dx:-1,dy:-1},{dx:0,dy:0},{dx:1,dy:1},{dx:-2,dy:0}]];
+gamePieceProperties.rotation[gamePieceProperties.gamePieceO]=[[{dx:0,dy:0},{dx:0,dy:0},{dx:0,dy:0},{dx:0,dy:0}],[{dx:0,dy:0},{dx:0,dy:0},{dx:0,dy:0},{dx:0,dy:0}],[{dx:0,dy:0},{dx:0,dy:0},{dx:0,dy:0},{dx:0,dy:0}],[{dx:0,dy:0},{dx:0,dy:0},{dx:0,dy:0},{dx:0,dy:0}]];
+gamePieceProperties.rotation[gamePieceProperties.gamePieceS]=[[{dx:0,dy:-2},{dx:-1,dy:-1},{dx:0,dy:0},{dx:-1,dy:1}],[{dx:2,dy:0},{dx:1,dy:-1},{dx:0,dy:0},{dx:-1,dy:-1}],[{dx:0,dy:2},{dx:1,dy:1},{dx:0,dy:0},{dx:1,dy:-1}],[{dx:-2,dy:0},{dx:-1,dy:1},{dx:0,dy:0},{dx:1,dy:1}]];
+gamePieceProperties.rotation[gamePieceProperties.gamePieceT]=[[{dx:1,dy:-1},{dx:0,dy:0},{dx:-1,dy:1},{dx:-1,dy:-1}],[{dx:1,dy:1},{dx:0,dy:0},{dx:-1,dy:-1},{dx:1,dy:-1}],[{dx:-1,dy:1},{dx:0,dy:0},{dx:1,dy:-1},{dx:1,dy:1}],[{dx:-1,dy:-1},{dx:0,dy:0},{dx:1,dy:1},{dx:-1,dy:1}]];
+gamePieceProperties.rotation[gamePieceProperties.gamePieceZ]=[[{dx:2,dy:0},{dx:1,dy:1},{dx:0,dy:0},{dx:-1,dy:1}],[{dx:0,dy:2},{dx:-1,dy:1},{dx:0,dy:0},{dx:-1,dy:-1}],[{dx:-2,dy:0},{dx:-1,dy:-1},{dx:0,dy:0},{dx:1,dy:-1}],[{dx:0,dy:-2},{dx:1,dy:-1},{dx:0,dy:0},{dx:1,dy:1}]];
+
 
 
 var gamepiece = function(type, dx, dy){
@@ -61,6 +68,18 @@ var gamepiece = function(type, dx, dy){
 				tetrominoeState[a].position.x+=1;
 				tetrominoeState[a].sprite.x+=gameProperties.tileWidth;
 			}
+	}
+
+	this.getRotationCoords = function(){
+		var coords = [];
+		for (var a = 0; a < length; a++){
+			var transition = gamePieceProperties.rotation[type][curState];
+			var newBlockCoords = {};
+			newBlockCoords.x = tetrominoeState[a].position.x + transition[a].dx;
+			newBlockCoords.y = tetrominoeState[a].position.y + transition[a].dy;
+			coords.push(newBlockCoords);
+		}
+		return coords;
 	}
 
 	this.rotate = function(){

@@ -8,8 +8,8 @@ var gameProperties = {
 
     wallBlockWidth: 32,
 
-    nRows: 8,
-    nColumns: 5, 
+    nRows: 12,
+    nColumns: 12, 
 };
 
 var graphicAssets = {
@@ -58,7 +58,9 @@ gameState.prototype = {
 				this.counter = -1;
 			}
 			if (this.cursors.up.isDown && this.cursors.up.repeats % 10 == 0){
-				this.gamePiece.rotate();
+				if (this.board.canRotate(this.gamePiece)){
+					this.gamePiece.rotate();
+				}
 			}
 		} else {
 			//process the collision, update board states
@@ -81,7 +83,6 @@ gameState.prototype = {
 
 	makeNextPiece: function(){
 		this.nextPieceType = Math.floor(Math.random() * (gamePieceProperties.totalPieces));
-		this.nextPieceType = 0;
 	}
 };
 
