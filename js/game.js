@@ -1,7 +1,7 @@
 var gameProperties = {
 	
-	shiftX: 5,
-	shiftY:4,
+	shiftX: 1,
+	shiftY: 4,
 
 	screenWidth: 800,
     screenHeight: 600,
@@ -10,7 +10,7 @@ var gameProperties = {
     tileHeight: 30,
 
     nRows: 15,
-    nColumns: 15, 
+    nColumns: 15,
 };
 
 var graphicAssets = {
@@ -19,7 +19,12 @@ var graphicAssets = {
 };
 
 var states = {
+	start: "menu",
 	game: "game",
+};
+
+var menuState = function(game){
+
 };
 
 var gameState = function(game){
@@ -53,23 +58,14 @@ gameState.prototype = {
 			this.makeNextPiece();
 		}
 
-		if (this.board.canMoveDown(this.gamePiece)){
-			if (this.counter == 60){
+		if (this.counter == 30){
+			if (this.board.canMoveDown(this.gamePiece)){
 				this.gamePiece.moveDown();
-				this.counter = -1;
-			}
-			if (this.cursors.up.isDown && this.cursors.up.repeats % 10 == 0){
-				if (this.board.canRotate(this.gamePiece)){
-					this.gamePiece.rotate();
-				}
-			}
-		} else {
-			//process the collision, update board states
-			if (this.counter == 30){
+			} else {
 				this.board.pieceLanded(this.gamePiece);
 				this.gamePiece = null;
-				this.counter = -1;
 			}
+			this.counter = -1;
 		}
 
 		if (this.gamePiece){ //in case it gets set to null before the next frame update
@@ -79,6 +75,12 @@ gameState.prototype = {
 
 			if (this.cursors.right.isDown && this.cursors.right.repeats % 5 == 0 && this.board.canMoveRight(this.gamePiece)){
 				this.gamePiece.moveRight();
+			}
+
+			if (this.cursors.up.isDown && this.cursors.up.repeats % 10 == 0){
+				if (this.board.canRotate(this.gamePiece)){
+					this.gamePiece.rotate();
+				}
 			}
 		}
 		
@@ -93,5 +95,7 @@ gameState.prototype = {
 
 var game = new Phaser.Game(gameProperties.screenWidth, gameProperties.screenHeight, Phaser.AUTO, 'gameDiv');
 game.state.add(states.game, gameState);
+game.state.add(states.start, menuState);
+//game.state.start(state.start);
 game.state.start(states.game);
 
