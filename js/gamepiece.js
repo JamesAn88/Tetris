@@ -29,7 +29,7 @@ gamePieceProperties.rotation[gamePieceProperties.gamePieceZ]=[[{dx:2,dy:0},{dx:1
 
 
 
-var gamepiece = function(type, dx, dy){
+var gamepiece = function(type){
 	var startingConfig = gamePieceProperties.map[type];
 	//info about current state of tetrominoe
 	//tetrominoeState[i].position.x is row
@@ -41,9 +41,9 @@ var gamepiece = function(type, dx, dy){
 	for (var i = 0; i < length; i++){
 		var blockState = {}; //state of a single piece
 		var position = {};
-		position.x = startingConfig[i].x+(dx||0);
-		position.y = startingConfig[i].y+(dy||0);
-		var sprite = game.add.sprite((position.x * gameProperties.tileWidth), (position.y * gameProperties.tileWidth), graphicAssets.blocks.name, blockColor); //make sprite here
+		position.x = startingConfig[i].x;
+		position.y = startingConfig[i].y;
+		var sprite = game.add.sprite(((position.x+gameProperties.shiftX) * gameProperties.tileWidth), ((position.y+gameProperties.shiftY) * gameProperties.tileWidth), graphicAssets.blocks.name, blockColor); //make sprite here
 		blockState.position = position;
 		blockState.sprite = sprite;
 		tetrominoeState.push(blockState);

@@ -1,4 +1,7 @@
 var gameProperties = {
+	
+	shiftX: 5,
+	shiftY:4,
 
 	screenWidth: 800,
     screenHeight: 600,
@@ -6,10 +9,8 @@ var gameProperties = {
     tileWidth: 30,
     tileHeight: 30,
 
-    wallBlockWidth: 32,
-
-    nRows: 12,
-    nColumns: 12, 
+    nRows: 15,
+    nColumns: 15, 
 };
 
 var graphicAssets = {

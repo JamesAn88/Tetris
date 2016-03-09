@@ -19,6 +19,19 @@ var board = function(rows, columns){
 		rowsOfBlocks.push(rowOfBlocks);
 	}
 
+	this.wall = game.add.group();
+	
+	this.addWalls = function(){
+		//create ground
+		for (var a =0; a < gameProperties.nColumns; a++){
+			game.add.sprite((gameProperties.shiftX+a)*gameProperties.tileWidth, (gameProperties.shiftY+gameProperties.nRows)*gameProperties.tileWidth, graphicAssets.wall.name, this.wall);
+		}
+		for (var a = 0; a < gameProperties.nRows+1; a++){
+			game.add.sprite((gameProperties.shiftX-1)*gameProperties.tileWidth, (gameProperties.shiftY+a)*gameProperties.tileWidth, graphicAssets.wall.name, this.wall);
+			game.add.sprite((gameProperties.shiftX+gameProperties.nColumns)*gameProperties.tileWidth, (gameProperties.shiftY+a)*gameProperties.tileWidth,graphicAssets.wall.name, this.wall);
+		}
+	}();
+	
 	this.getRows = function(){
 		return rowsOfBlocks;
 	}
@@ -123,7 +136,7 @@ var board = function(rows, columns){
 					while (newYPosition<gameProperties.nRows-1&&!this.isFilled(a, newYPosition+1)){
 						newYPosition++;
 					}
-					sprite.y=gameProperties.tileWidth*(newYPosition);
+					sprite.y+=gameProperties.tileWidth*(newYPosition-i);
 					rowsOfBlocks[a][i].reset(false);
 					rowsOfBlocks[a][newYPosition].setSprite(sprite);
 					rowsOfBlocks[a][newYPosition].setState(true);
